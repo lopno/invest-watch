@@ -1,0 +1,19 @@
+{
+  "name": "june-watch",
+  "version": "1.0.0",
+  "description": "Get alerted when your investment is updated",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Mikael Midtgaard (lopno)",
+  "license": "MIT",
+  "dependencies": {
+    "fetch": "^1.1.0",
+    "parse5": "^3.0.1",
+    "promisify-fetch": "^1.0.5",
+    "xmldom": "^0.1.27",
+    "xmlserializer": "^0.6.0",
+    "xpath": "0.0.23"
+  }
+}
