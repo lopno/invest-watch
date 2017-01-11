@@ -1,10 +1,11 @@
 {
-  "name": "june-watch",
+  "name": "invest-watch",
   "version": "1.0.0",
   "description": "Get alerted when your investment is updated",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "mocha $(find ./ -path '*.test.*')"
   },
   "author": "Mikael Midtgaard (lopno)",
   "license": "MIT",
@@ -15,5 +16,9 @@
     "xmldom": "^0.1.27",
     "xmlserializer": "^0.6.0",
     "xpath": "0.0.23"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
   }
 }

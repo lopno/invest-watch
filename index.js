@@ -4,7 +4,11 @@ const parse5 = require('parse5');
 const xmlser = require('xmlserializer');
 const dom = require('xmldom').DOMParser;
 
+const messageUtils = require('./utils/message');
+const calculationUtils = require('./utils/calculation');
+
 const sharesCount = process.env.SHARES_COUNT || 1;
+var hasWaited = false;
 
 function checkValuation() {
   // alternative site:
@@ -24,6 +28,10 @@ function checkValuation() {
       select("(//x:div[@id=\"content\"]/x:table)[2]/x:tbody/x:tr/x:td[3]/x:span[2]/text()", doc)
       .toString().trim();
     const valueNumber = parseFloat(value.split(' ')[0], 10);
+    const numberRegex = /(\d)+\.(\d)+/;
+    const isPositive = (change.charAt(0) === '+');
+    const changeNumber = parseFloat(numberRegex.exec(change)[0]);
+    const previousValue = calculationUtils.previousValue(valueNumber, changeNumber, isPositive);
     const dateArray = dateString.split('/');
     const valuationDate = new Date(
         parseInt(dateArray[2], 10),
@@ -35,22 +43,21 @@ function checkValuation() {
 
     if (valuationDate.getDay() !== currentDate.getDay()) {
       console.log('Today\'s valuation is not yet up, checking again in 5 minutes.');
+      hasWaited = true;
       setTimeout(checkValuation, 30000);
     } else {
       console.log('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n');
-      console.log('JJJJJJJJJJJ   UU       UU   NN       NN   EEEEEEEEE');
-      console.log('JJJJJJJJJJJ   UU       UU   NNN      NN   EEEEEEEEE');
-      console.log('         JJ   UU       UU   NNNN     NN   EE       ');
-      console.log('         JJ   UU       UU   NN NN    NN  EEEEEEE   ');
-      console.log('         JJ   UU       UU   NN  NN   NN   EE       ');
-      console.log('         JJ   UU       UU   NN   NN  NN  EEEEEEE   ');
-      console.log('        JJJ   UU       UU   NN    NN NN   EE       ');
-      console.log('JJJJJJJJJJJ   UUU     UUU   NN     NNNN   EEEEEEEEE');
-      console.log('JJJJJJJJJJ     UUUUUUUUU    NN      NNN   EEEEEEEEE');
-      console.log('\n\n\n');
-      console.log(valuationDate.getDate() + '/' + (valuationDate.getMonth() + 1) + ' ' + value + ' '
-        + change + ' ' + (valueNumber * sharesCount));
+      messageUtils.printJuneLogo();
       console.log('\n\n');
+      if (hasWaited) {
+        console.log(currentDate.toTimeString());
+      }
+      console.log(messageUtils.formatDate(valuationDate));
+      console.log('New:         ', valueNumber, ' ', valueNumber * sharesCount);
+      console.log('change:      ', change);
+      console.log('Old:         ', previousValue, ' ', previousValue * sharesCount);
+      console.log('value change:', (valueNumber - previousValue) * sharesCount);
+      console.log('\n');
     }
   });
 }
