@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "mocha $(find ./ -path '*.test.*')"
+    "test": "mocha $(find ./ -path '*.test.js')",
+    "test:coverage": "istanbul cover -x '**/*.test.js' _mocha $(find ./ -path '*.test.js')"
   },
   "author": "Mikael Midtgaard (lopno)",
   "license": "MIT",
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "istanbul": "^0.4.5",
     "mocha": "^3.2.0"
   }
 }
