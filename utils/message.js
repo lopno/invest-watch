@@ -13,6 +13,9 @@ function printJuneLogo() {
 }
 
 function formatDate(date) {
+  if(Object.prototype.toString.call(date) !== '[object Date]') {
+    return '';
+  }
   return date.getDate() + '/' + (date.getMonth() + 1) + ' ' + dateUtils.getWeekDay(date.getDay());
 }
 
