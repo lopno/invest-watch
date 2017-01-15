@@ -1,4 +1,8 @@
-const fetchUrl = require("fetch").fetchUrl;
+/* eslint-disable strict, no-console */
+
+'use strict';
+
+const fetchUrl = require('fetch').fetchUrl;
 const xpath = require('xpath');
 const parse5 = require('parse5');
 const xmlser = require('xmlserializer');
@@ -8,24 +12,26 @@ const messageUtils = require('./utils/message');
 const calculationUtils = require('./utils/calculation');
 
 const sharesCount = process.env.SHARES_COUNT || 1;
-var hasWaited = false;
+let hasWaited = false;
 
 function checkValuation() {
   // alternative site:
   // http://trustnetoffshore.com/Factsheets/Factsheet.aspx?fundCode=NLFYO&univ=DC
-  return fetchUrl("https://www.fundsquare.net/security/summary?idInstr=256570", function(error, meta, body){
+  return fetchUrl('https://www.fundsquare.net/security/summary?idInstr=256570', (error, meta, body) => {
     const document = parse5.parse(body.toString());
     const xhtml = xmlser.serializeToString(document);
-    const doc = new dom({errorHandler: {error: function(e) {}}}).parseFromString(xhtml);
-    const select = xpath.useNamespaces({"x": "http://www.w3.org/1999/xhtml"});
+    /* eslint-disable new-cap */
+    const doc = new dom({ errorHandler: { error: () => {} } }).parseFromString(xhtml);
+    /* eslint-enable new-cap */
+    const select = xpath.useNamespaces({ x: 'http://www.w3.org/1999/xhtml' });
     const dateString =
-      select("(//x:div[@id=\"content\"]/x:table)[2]/x:tbody/x:tr/x:td[2]/text()", doc)
+      select('(//x:div[@id="content"]/x:table)[2]/x:tbody/x:tr/x:td[2]/text()', doc)
         .toString().trim();
     const value =
-      select("(//x:div[@id=\"content\"]/x:table)[2]/x:tbody/x:tr/x:td[3]/x:span[1]/text()", doc)
+      select('(//x:div[@id="content"]/x:table)[2]/x:tbody/x:tr/x:td[3]/x:span[1]/text()', doc)
         .toString().trim();
     const change =
-      select("(//x:div[@id=\"content\"]/x:table)[2]/x:tbody/x:tr/x:td[3]/x:span[2]/text()", doc)
+      select('(//x:div[@id="content"]/x:table)[2]/x:tbody/x:tr/x:td[3]/x:span[2]/text()', doc)
       .toString().trim();
     const valueNumber = parseFloat(value.split(' ')[0], 10);
     const numberRegex = /(\d)+\.(\d)+/;
@@ -36,8 +42,7 @@ function checkValuation() {
     const valuationDate = new Date(
         parseInt(dateArray[2], 10),
         parseInt(dateArray[1], 10) - 1,
-        parseInt(dateArray[0], 10)
-      );
+        parseInt(dateArray[0], 10));
 
     const currentDate = new Date(Date.now());
 

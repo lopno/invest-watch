@@ -12,5 +12,5 @@ function getWeekDay(integer) {
 }
 
 module.exports = {
-  getWeekDay: getWeekDay,
+  getWeekDay,
 };

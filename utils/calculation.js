@@ -3,5 +3,5 @@ function previousValue(currentValue, change, isPositive) {
 }
 
 module.exports = {
-  previousValue: previousValue,
+  previousValue,
 };
