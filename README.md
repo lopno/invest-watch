@@ -1,6 +1,8 @@
 # invest-watch
 Get alerted when your investment is updated
 
+![Invest Watch](https://i.imgur.com/rGn7fqF.gif)
+
 ## Running
 
 Install
